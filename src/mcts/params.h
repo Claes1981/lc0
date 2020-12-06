@@ -103,25 +103,25 @@ class SearchParams {
     return kMovesLeftQuadraticFactor;
   }
   std::string GetAuxEngineFile() const {
-    return options_.Get<std::string>(kAuxEngineFileId.GetId());
+    return options_.Get<std::string>(kAuxEngineFileId);
   }
   std::string GetAuxEngineOptions() const {
-    return options_.Get<std::string>(kAuxEngineOptionsId.GetId());
+    return options_.Get<std::string>(kAuxEngineOptionsId);
   }
   int GetAuxEngineThreshold() const {
-    return options_.Get<int>(kAuxEngineThresholdId.GetId());
+    return options_.Get<int>(kAuxEngineThresholdId);
   }
   int GetAuxEngineDepth() const {
-    return options_.Get<int>(kAuxEngineDepthId.GetId());
+    return options_.Get<int>(kAuxEngineDepthId);
   }
   float GetAuxEngineBoost() const {
-    return options_.Get<float>(kAuxEngineBoostId.GetId());
+    return options_.Get<float>(kAuxEngineBoostId);
   }
   int GetAuxEngineFollowPvDepth() const {
-    return options_.Get<int>(kAuxEngineFollowPvDepthId.GetId());
+    return options_.Get<int>(kAuxEngineFollowPvDepthId);
   }
   int GetAuxEngineVerbosity() const {
-    return options_.Get<int>(kAuxEngineVerbosityId.GetId());
+    return options_.Get<int>(kAuxEngineVerbosityId);
   }
   bool GetDisplayCacheUsage() const { return kDisplayCacheUsage; }
   int GetMaxConcurrentSearchers() const { return kMaxConcurrentSearchers; }
