@@ -42,61 +42,65 @@ class SearchParams {
   static void Populate(OptionsParser* options);
 
   // Parameter getters.
-  int GetMiniBatchSize() const {
-    return kMiniBatchSize;
-  }
+  int GetMiniBatchSize() const { return kMiniBatchSize; }
   int GetMaxPrefetchBatch() const {
-    return options_.Get<int>(kMaxPrefetchBatchId.GetId());
+    return options_.Get<int>(kMaxPrefetchBatchId);
   }
-  float GetCpuct() const { return kCpuct; }
-  float GetCpuctBase() const { return kCpuctBase; }
-  float GetCpuctFactor() const { return kCpuctFactor; }
-  float GetTemperature() const {
-    return options_.Get<float>(kTemperatureId.GetId());
+  float GetCpuct(bool at_root) const { return at_root ? kCpuctAtRoot : kCpuct; }
+  float GetCpuctBase(bool at_root) const {
+    return at_root ? kCpuctBaseAtRoot : kCpuctBase;
   }
+  float GetCpuctFactor(bool at_root) const {
+    return at_root ? kCpuctFactorAtRoot : kCpuctFactor;
+  }
+  bool GetTwoFoldDraws() const { return options_.Get<bool>(kTwoFoldDrawsId); }
+  float GetTemperature() const { return options_.Get<float>(kTemperatureId); }
   float GetTemperatureVisitOffset() const {
-    return options_.Get<float>(kTemperatureVisitOffsetId.GetId());
+    return options_.Get<float>(kTemperatureVisitOffsetId);
   }
-  int GetTempDecayMoves() const {
-    return options_.Get<int>(kTempDecayMovesId.GetId());
+  int GetTempDecayMoves() const { return options_.Get<int>(kTempDecayMovesId); }
+  int GetTempDecayDelayMoves() const {
+    return options_.Get<int>(kTempDecayDelayMovesId);
   }
   int GetTemperatureCutoffMove() const {
-    return options_.Get<int>(kTemperatureCutoffMoveId.GetId());
+    return options_.Get<int>(kTemperatureCutoffMoveId);
   }
   float GetTemperatureEndgame() const {
-    return options_.Get<float>(kTemperatureEndgameId.GetId());
+    return options_.Get<float>(kTemperatureEndgameId);
   }
   float GetTemperatureWinpctCutoff() const {
-    return options_.Get<float>(kTemperatureWinpctCutoffId.GetId());
+    return options_.Get<float>(kTemperatureWinpctCutoffId);
   }
-
-  bool GetNoise() const { return kNoise; }
-  bool GetVerboseStats() const {
-    return options_.Get<bool>(kVerboseStatsId.GetId());
+  float GetNoiseEpsilon() const { return kNoiseEpsilon; }
+  float GetNoiseAlpha() const { return kNoiseAlpha; }
+  bool GetVerboseStats() const { return options_.Get<bool>(kVerboseStatsId); }
+  bool GetLogLiveStats() const { return options_.Get<bool>(kLogLiveStatsId); }
+  bool GetFpuAbsolute(bool at_root) const {
+    return at_root ? kFpuAbsoluteAtRoot : kFpuAbsolute;
   }
-  bool GetLogLiveStats() const {
-    return options_.Get<bool>(kLogLiveStatsId.GetId());
+  float GetFpuValue(bool at_root) const {
+    return at_root ? kFpuValueAtRoot : kFpuValue;
   }
-  float GetSmartPruningFactor() const { return kSmartPruningFactor; }
-  bool GetFpuAbsolute() const { return kFpuAbsolute; }
-  float GetFpuReduction() const { return kFpuReduction; }
-  float GetFpuValue() const { return kFpuValue; }
   int GetCacheHistoryLength() const { return kCacheHistoryLength; }
   float GetPolicySoftmaxTemp() const { return kPolicySoftmaxTemp; }
   int GetMaxCollisionEvents() const { return kMaxCollisionEvents; }
   int GetMaxCollisionVisitsId() const { return kMaxCollisionVisits; }
   bool GetOutOfOrderEval() const { return kOutOfOrderEval; }
+  bool GetStickyEndgames() const { return kStickyEndgames; }
   bool GetSyzygyFastPlay() const { return kSyzygyFastPlay; }
-  int GetMultiPv() const { return options_.Get<int>(kMultiPvId.GetId()); }
+  int GetMultiPv() const { return options_.Get<int>(kMultiPvId); }
+  bool GetPerPvCounters() const { return options_.Get<bool>(kPerPvCountersId); }
   std::string GetScoreType() const {
-    return options_.Get<std::string>(kScoreTypeId.GetId());
+    return options_.Get<std::string>(kScoreTypeId);
   }
   FillEmptyHistory GetHistoryFill() const { return kHistoryFill; }
-  int GetKLDGainAverageInterval() const {
-    return options_.Get<int>(kKLDGainAverageInterval.GetId());
-  }
-  float GetMinimumKLDGainPerNode() const {
-    return options_.Get<float>(kMinimumKLDGainPerNode.GetId());
+  float GetMovesLeftMaxEffect() const { return kMovesLeftMaxEffect; }
+  float GetMovesLeftThreshold() const { return kMovesLeftThreshold; }
+  float GetMovesLeftSlope() const { return kMovesLeftSlope; }
+  float GetMovesLeftConstantFactor() const { return kMovesLeftConstantFactor; }
+  float GetMovesLeftScaledFactor() const { return kMovesLeftScaledFactor; }
+  float GetMovesLeftQuadraticFactor() const {
+    return kMovesLeftQuadraticFactor;
   }
   std::string GetAuxEngineFile() const {
     return options_.Get<std::string>(kAuxEngineFileId.GetId());
@@ -119,37 +123,53 @@ class SearchParams {
   int GetAuxEngineVerbosity() const {
     return options_.Get<int>(kAuxEngineVerbosityId.GetId());
   }
+  bool GetDisplayCacheUsage() const { return kDisplayCacheUsage; }
+  int GetMaxConcurrentSearchers() const { return kMaxConcurrentSearchers; }
+  float GetSidetomoveDrawScore() const { return kDrawScoreSidetomove; }
+  float GetOpponentDrawScore() const { return kDrawScoreOpponent; }
+  float GetWhiteDrawDelta() const { return kDrawScoreWhite; }
+  float GetBlackDrawDelta() const { return kDrawScoreBlack; }
+  int GetMaxOutOfOrderEvals() const { return kMaxOutOfOrderEvals; }
+  float GetNpsLimit() const { return kNpsLimit; }
+  int GetSolidTreeThreshold() const { return kSolidTreeThreshold; }
 
   // Search parameter IDs.
   static const OptionId kMiniBatchSizeId;
   static const OptionId kMaxPrefetchBatchId;
   static const OptionId kCpuctId;
+  static const OptionId kCpuctAtRootId;
   static const OptionId kCpuctBaseId;
+  static const OptionId kCpuctBaseAtRootId;
   static const OptionId kCpuctFactorId;
+  static const OptionId kCpuctFactorAtRootId;
+  static const OptionId kRootHasOwnCpuctParamsId;
+  static const OptionId kTwoFoldDrawsId;
   static const OptionId kTemperatureId;
   static const OptionId kTempDecayMovesId;
+  static const OptionId kTempDecayDelayMovesId;
   static const OptionId kTemperatureCutoffMoveId;
   static const OptionId kTemperatureEndgameId;
   static const OptionId kTemperatureWinpctCutoffId;
   static const OptionId kTemperatureVisitOffsetId;
-  static const OptionId kNoiseId;
+  static const OptionId kNoiseEpsilonId;
+  static const OptionId kNoiseAlphaId;
   static const OptionId kVerboseStatsId;
   static const OptionId kLogLiveStatsId;
-  static const OptionId kSmartPruningFactorId;
   static const OptionId kFpuStrategyId;
-  static const OptionId kFpuReductionId;
   static const OptionId kFpuValueId;
+  static const OptionId kFpuStrategyAtRootId;
+  static const OptionId kFpuValueAtRootId;
   static const OptionId kCacheHistoryLengthId;
   static const OptionId kPolicySoftmaxTempId;
   static const OptionId kMaxCollisionEventsId;
   static const OptionId kMaxCollisionVisitsId;
   static const OptionId kOutOfOrderEvalId;
+  static const OptionId kStickyEndgamesId;
   static const OptionId kSyzygyFastPlayId;
   static const OptionId kMultiPvId;
+  static const OptionId kPerPvCountersId;
   static const OptionId kScoreTypeId;
   static const OptionId kHistoryFillId;
-  static const OptionId kMinimumKLDGainPerNode;
-  static const OptionId kKLDGainAverageInterval;
   static const OptionId kAuxEngineFileId;
   static const OptionId kAuxEngineOptionsId;
   static const OptionId kAuxEngineThresholdId;
@@ -157,6 +177,21 @@ class SearchParams {
   static const OptionId kAuxEngineBoostId;
   static const OptionId kAuxEngineFollowPvDepthId;
   static const OptionId kAuxEngineVerbosityId;
+  static const OptionId kMovesLeftMaxEffectId;
+  static const OptionId kMovesLeftThresholdId;
+  static const OptionId kMovesLeftConstantFactorId;
+  static const OptionId kMovesLeftScaledFactorId;
+  static const OptionId kMovesLeftQuadraticFactorId;
+  static const OptionId kMovesLeftSlopeId;
+  static const OptionId kDisplayCacheUsageId;
+  static const OptionId kMaxConcurrentSearchersId;
+  static const OptionId kDrawScoreSidetomoveId;
+  static const OptionId kDrawScoreOpponentId;
+  static const OptionId kDrawScoreWhiteId;
+  static const OptionId kDrawScoreBlackId;
+  static const OptionId kMaxOutOfOrderEvalsId;
+  static const OptionId kNpsLimitId;
+  static const OptionId kSolidTreeThresholdId;
 
  private:
   const OptionsDict& options_;
@@ -165,23 +200,43 @@ class SearchParams {
   // reasons.
   // 2. Parameter has to stay the say during the search.
   // TODO(crem) Some of those parameters can be converted to be dynamic after
-  //            trivial search optimiations.
+  //            trivial search optimizations.
   const float kCpuct;
+  const float kCpuctAtRoot;
   const float kCpuctBase;
+  const float kCpuctBaseAtRoot;
   const float kCpuctFactor;
-  const bool kNoise;
-  const float kSmartPruningFactor;
+  const float kCpuctFactorAtRoot;
+  const float kNoiseEpsilon;
+  const float kNoiseAlpha;
   const bool kFpuAbsolute;
-  const float kFpuReduction;
   const float kFpuValue;
+  const bool kFpuAbsoluteAtRoot;
+  const float kFpuValueAtRoot;
   const int kCacheHistoryLength;
   const float kPolicySoftmaxTemp;
   const int kMaxCollisionEvents;
   const int kMaxCollisionVisits;
   const bool kOutOfOrderEval;
+  const bool kStickyEndgames;
   const bool kSyzygyFastPlay;
   const FillEmptyHistory kHistoryFill;
   const int kMiniBatchSize;
+  const float kMovesLeftMaxEffect;
+  const float kMovesLeftThreshold;
+  const float kMovesLeftSlope;
+  const float kMovesLeftConstantFactor;
+  const float kMovesLeftScaledFactor;
+  const float kMovesLeftQuadraticFactor;
+  const bool kDisplayCacheUsage;
+  const int kMaxConcurrentSearchers;
+  const float kDrawScoreSidetomove;
+  const float kDrawScoreOpponent;
+  const float kDrawScoreWhite;
+  const float kDrawScoreBlack;
+  const int kMaxOutOfOrderEvals;
+  const float kNpsLimit;
+  const int kSolidTreeThreshold;
 };
 
 }  // namespace lczero
